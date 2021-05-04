@@ -189,95 +189,69 @@
                 </tbody>
               </table><!-- END TABLA ITEMS -->
 
-              <!--SUBTOTAL E IMPUESTOS INTEGRADOS-->
-              <div class="row mt32 mb32">
-                  <div class="col-8"/>
-                  <div class="col-4">
-                      <table class="table table-condensed">
-                          <tr class="border-black" t-if="o.l10n_latam_document_type_id.l10n_ar_letter != 'B'">
-                              <td><strong>Subtotal</strong></td>
-                              <td class="text-right">
-                                  <span t-field="o.amount_untaxed" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
-                              </td>
-                          </tr>
-                          <!-- t t-foreach="o._get_tax_amount_by_group()" t-as="amount_by_group">
-                              <tr>
-                                  <td><span t-esc="amount_by_group[0] if len(o.tax_line_ids) > 1 else (o.tax_line_ids.tax_id.description or o.tax_line_ids.tax_id.name)"/></td>
-                                  <td class="text-right">
-                                      <span t-esc="amount_by_group[1]" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
-                                  </td>
-                              </tr>
-                          </t-->
-                          <tr t-if="len(o.move_tax_ids) &gt; 0 and o.l10n_latam_document_type_id.l10n_ar_letter != 'B'">
-                                <td colspan="2">
-                                    <table class="table table-condensed" style="width: 100%">
-                                        <thead>
-                                            <tr>
-                                                <th>Impuesto</th>
-                                                <th class="text-right">Base</th>
-                                                <th class="text-right">Monto</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr t-foreach="o.move_tax_ids" t-as="t">
-                                                <td><span t-field="t.tax_id.description"/></td>
-                                                <td class="text-right">
-                                                    <span t-field="t.base_amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
-                                                </td>
-                                                <td class="text-right">
-                                                    <span t-field="t.tax_amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                          <tr class="border-black">
-                              <td><strong>Total</strong></td>
-                              <td class="text-right">
-                                   <span t-field="o.amount_total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
-                              </td>
-                          </tr>
-                      </table>
-                  </div>
-              </div><!--END SUBTOTAL E IMPUESTOS INTEGRADOS-->
 
-            <!-- DO NOT REMOVE THIS TABLE. MANDATORY IN SOME COUNTRIES -->
-            <!-- IMPUESTOS CLASSIC-->
-            <!--
-            <div class="row" t-if="len(o.tax_line_ids) &gt; 0 and o.journal_document_type_id.document_type_id.document.l10n_ar_letter_id.name != 'B'">
-                <div class="col-6">
-                    <table class="table table-condensed">
-                        <thead>
-                            <tr>
-                                <th>Impuesto</th>
-                                <th class="text-right">Base</th>
-                                <th class="text-right">Monto</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr t-foreach="o.tax_line_ids" t-as="t">
-                                <td><span t-field="t.tax_id.description"/></td>
-                                <td class="text-right">
-                                    <span t-field="t.base" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
-                                </td>
-                                <td class="text-right">
-                                    <span t-field="t.amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-          --> <!-- END IMPUESTOS CLASSIC -->
+    <!--SUBTOTAL E IMPUESTOS INTEGRADOS-->
+    <div class="row mt32 mb32" style="font-size: 16px">
+      <div class="col-6">
+        <p t-if="o.narration">
+          <strong>Comentarios:</strong>
+          <span t-field="o.narration"/>
+        </p>
+        <p t-if="o.invoice_payment_term_id">
+          <span t-field="o.invoice_payment_term_id.note"/>
+        </p>
+        <br/>
+      </div>
+      <div class="col-6">
+        <table class="table table-sm ">
+          <tr class="border-black" t-if="o.l10n_latam_document_type_id.l10n_ar_letter != 'B'">
+            <td>
+              <strong>Subtotal</strong>
+            </td>
+            <td class="text-right">
+              <span t-field="o.amount_untaxed" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+            </td>
+          </tr>
 
-            <p t-if="o.narration">
-                <strong>Comentarios:</strong>
-                <span t-field="o.narration"/>
-            </p>
-            <p t-if="o.invoice_payment_term_id">
-                <span t-field="o.invoice_payment_term_id.note"/>
-            </p>
+        </table>
+        <table class="table table-sm">
+          <tr t-if="len(o.move_tax_ids) &gt; 0 and o.l10n_latam_document_type_id.l10n_ar_letter != 'B'">
+            <thead class="thead-light">
+              <tr>
+                <th>Impuesto</th>
+                <th class="text-center">Base</th>
+                <th class="text-center">Monto</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr t-foreach="o.move_tax_ids" t-as="t">
+                <td>
+                  <span t-field="t.tax_id.description"/>
+                </td>
+                <td class="text-right">
+                  <span t-field="t.base_amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                </td>
+                <td class="text-right">
+                  <span t-field="t.tax_amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                </td>
+              </tr>
+            </tbody>
+          </tr>
+        </table>
+        <table class="table table-sm">
+          <tr class="border-black">
+            <td>
+              <strong>Total</strong>
+            </td>
+            <td class="text-right">
+              <span t-field="o.amount_total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>    <!--END SUBTOTAL E IMPUESTOS INTEGRADOS-->
+
+
             <br/>
 
           </div><!--END PAGE-->
